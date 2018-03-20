@@ -8,8 +8,6 @@ import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
 
 from dsutils.general import general_utils
-from dsutils.setup import log
-logger = logging.getLogger(__name__)
 
 
 def trust_notebook(path):
@@ -17,7 +15,7 @@ def trust_notebook(path):
     Mark a Jupyter notebook as trusted.
     """
     cmd = ["jupyter trust", path]
-    logger.debug("trust_notebook cmd: {}".format(cmd))
+    logging.debug("trust_notebook cmd: {}".format(cmd))
 
     p = Popen(["jupyter trust", path], stdin=PIPE,
               stdout=PIPE, stderr=PIPE, shell=True)
@@ -95,16 +93,16 @@ def run_notebook(nb_path,
     nb_path = Path(nb_path)
     if not nb_path.is_file():
         raise Exception("Path '{0}' not found.".format(nb_path))
-    logger.debug("input nb_path: {}".format(nb_path))
+    logging.debug("input nb_path: {}".format(nb_path))
 
     # output destination checks
-    logger.debug("out_dir: {}".format(out_dir))
+    logging.debug("out_dir: {}".format(out_dir))
     if out_dir is None:
         out_dir = nb_path.parent.absolute()
     out_dir = Path(out_dir)
     if not out_dir.exists():
         raise Exception("Output path {0} not found.".format(out_dir))
-    logger.debug("out_dir: {}".format(out_dir))
+    logging.debug("out_dir: {}".format(out_dir))
 
     out_path = out_dir / nb_path.stem
 
@@ -118,8 +116,8 @@ def run_notebook(nb_path,
             nb_suffix,
             now)
     out_nb_path = Path(out_nb_path)
-    logger.debug("out_nb_path: {}".format(out_nb_path))
-    logger.debug("out_nb_path.absolute(): {}".format(out_nb_path.absolute()))
+    logging.debug("out_nb_path: {}".format(out_nb_path))
+    logging.debug("out_nb_path.absolute(): {}".format(out_nb_path.absolute()))
 
     # create processor
     if execute_kwargs is None:
@@ -147,7 +145,7 @@ def run_notebook(nb_path,
         # Execution failed, print a message then raise.
         msg = 'Error executing the notebook "%s".\n\n' % nb_path
         msg += 'See notebook "%s" for the traceback.' % out_nb_path.absolute()
-        logger.error(msg)
+        logging.error(msg)
         raise Exception(msg)
     else:
         # On successful execution, add timestamping cell
