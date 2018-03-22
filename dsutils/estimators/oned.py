@@ -7,7 +7,7 @@ Simple estimators to apply to 1d arrays
 
 
 def distinct_count(data,
-                   notnull=True):
+                   notnull=False):
     """
     Return distinct count of some 1-d data.
 
