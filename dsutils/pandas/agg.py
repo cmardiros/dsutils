@@ -20,6 +20,13 @@ def groupby_parallel(df,
     groups is high.
 
     Returns: dataframe
+
+    Example:
+
+    gb = groupby_parallel(df=df,
+                          gb_keys=['user_fk'],
+                          agg_dict={'session_id': [distinct_count]})
+
     """
 
     tasks = list()
@@ -35,9 +42,6 @@ def groupby_parallel(df,
         return gb
 
     for name, group in gb:
-        # print("name: {}".format(name))
-        # print("group.shape: {}".format(group.shape))
-        #
         tasks.append(delayed(_agg)(group))
 
     with dask_utils.ProgressBar(identifier='groupby_parallel'):
